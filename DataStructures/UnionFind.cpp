@@ -1,4 +1,5 @@
 struct UnionFind {
+
   int n, group_numbers;
   vector<int> parents;
   vector<vector<int>> G;
@@ -26,9 +27,7 @@ struct UnionFind {
   bool unite(int x, int y) {
     x = root(x);
     y = root(y);
-    if (x == y) {
-      return false;
-    }
+    if (x == y) return false;
     --group_numbers;
     G[x].emplace_back(y);
     G[y].emplace_back(x);

@@ -94,4 +94,3 @@ struct FenwickTree {
     cout << fw[_n-1] << "]\n";
   }
 };
-
