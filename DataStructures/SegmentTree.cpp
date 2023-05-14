@@ -6,23 +6,27 @@ struct SegmentTree {
   T _e;
 
   SegmentTree(int n, function<T (T, T)> op, T e) {
-    _op = op;
-    _e = e;
-    _n = n;
-    _log = 32 - __builtin_clz(_n-1);
-    _size = 1 << _log;
-    _data.resize(_size << 1, _e);
+    _build(n, op, e);
   }
 
   SegmentTree(vector<T> a, function<T (T, T)> op, T e) {
-    _n = (int)a.size();
-    SegmentTree(_n, op, e);
+    int n = (int)a.size();
+    _build(n, op, e);
     for (int i = 0; i < _n; ++i) {
       _data[i+_size] = a[i];
     }
     for (int i = _size-1; i > 0; --i) {
       _data[i] = _op(_data[i<<1], _data[i<<1|1]);
     }
+  }
+
+  void _build(int n, function<T (T, T)> op, T e) {
+    this->_op = op;
+    this->_e = e;
+    this->_n = n;
+    this->_log = 32 - __builtin_clz(_n-1);
+    this->_size = 1 << _log;
+    this->_data.resize(_size << 1, _e);
   }
 
   T get(int k) {
@@ -66,7 +70,7 @@ struct SegmentTree {
     l += _size;
     T s = _e;
     while (1) {
-      while (l & 1 == 0) {
+      while ((l & 1) == 0) {
         l >>= 1;
       }
       if (!f(_op(s, _data[l]))) {
@@ -81,7 +85,7 @@ struct SegmentTree {
       }
       s = _op(s, _data[l]);
       ++l;
-      if (l & (-l) == l) break;
+      if ((l & (-l)) == l) break;
     }
     return _n;
   }
@@ -95,7 +99,7 @@ struct SegmentTree {
       while (r > 1 && (r & 1)) {
         r >>= 1;
       }
-      if (!f(_op(data[r], s))) {
+      if (!f(_op(_data[r], s))) {
         while (r < _size) {
           r = r << 1 | 1;
           if (f(_op(_data[r], s))) {
@@ -120,6 +124,9 @@ struct SegmentTree {
   }
 
   void print() {
-    return;
+    for (int i = 1; i < (int)_data.size(); ++i) {
+      cout << _data[i] << " ";
+    }
+    cout << endl;
   }
 };

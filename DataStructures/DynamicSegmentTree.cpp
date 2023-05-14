@@ -6,26 +6,29 @@ struct DynamicSegmentTree {
   T _e;
 
   DynamicSegmentTree(int u, function<T (T, T)> op, T e) {
-    _op = op;
-    _e = e;
-    _u = u;
-    _log = 32 - __builtin_clz(_u-1);
-    _size = 1 << _log;
-    _data();
+    _build(u, op, e);
+  }
+
+  void _build(int u, function<T (T, T)> op, T e) {
+    this->_op = op;
+    this->_e = e;
+    this->_u = u;
+    this->_log = 32 - __builtin_clz(_u-1);
+    this->_size = 1 << _log;
   }
 
   T _get(int k) {
     auto it = _data.find(k);
-    return it == _data.end()? _e : *it;
+    return it == _data.end()? _e : it->second;
   }
 
   T get(int k) {
-    if (k < 0) k += _n;
+    if (k < 0) k += _u;
     return _get(k+_size);
   }
 
   void set(int k, T v) {
-    if (k < 0) k += _n;
+    if (k < 0) k += _u;
     k += _size;
     _data[k] = v;
     for (int i = 0; i < _log; ++i) {
@@ -56,11 +59,11 @@ struct DynamicSegmentTree {
   }
 
   int max_right(int l, function<bool (T)> f) {
-    if (l == _n) return _n;
+    if (l == _u) return _u;
     l += _size;
     T s = _e;
     while (1) {
-      while (l & 1 == 0) {
+      while ((l & 1) == 0) {
         l >>= 1;
       }
       if (!f(_op(s, _get(l)))) {
@@ -75,9 +78,9 @@ struct DynamicSegmentTree {
       }
       s = _op(s, _get(l));
       ++l;
-      if (l & (-l) == l) break;
+      if ((l & (-l)) == l) break;
     }
-    return _n;
+    return _u;
   }
 
   int min_left(int r, function<bool (T)> f) {
@@ -86,7 +89,7 @@ struct DynamicSegmentTree {
     T s = _e;
     while (1) {
       --r;
-      while (r > 1 && (r & 1)) {
+      while ((r > 1) && (r & 1)) {
         r >>= 1;
       }
       if (!f(_op(_get(r), s))) {
@@ -100,20 +103,18 @@ struct DynamicSegmentTree {
         return r + 1 - _size;
       }
       s = _op(_get(r), s);
-      if (r & (-r) == r) break;
+      if ((r & (-r)) == r) break;
     }
     return 0;
   }
 
   vector<T> tovector() {
-    vector<T> res(_n);
-    for (int i = 0; i < _n; ++i) {
+    vector<T> res(_u);
+    for (int i = 0; i < _u; ++i) {
       res[i] = get(i);
     }
     return res;
   }
 
-  void print() {
-    return;
-  }
+  void print() {}
 };
