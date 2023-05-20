@@ -109,6 +109,11 @@ struct List {
     return (int)a.size();
   }
 
+  vector<T> tovector() {
+    vector<T> res = a;
+    return res;
+  }
+
   void print() {
     cout << "[";
     for (int i = 0; i < len()-1; ++i) {

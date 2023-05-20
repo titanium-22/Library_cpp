@@ -31,9 +31,7 @@ struct UnionFind {
     --group_numbers;
     G[x].emplace_back(y);
     G[y].emplace_back(x);
-    if (parents[x] >= parents[y]) {
-      swap(x, y);
-    }
+    if (parents[x] >= parents[y]) swap(x, y);
     parents[x] += parents[y];
     parents[y] = x;
     return true;
@@ -97,3 +95,4 @@ struct UnionFind {
     }
   }
 };
+

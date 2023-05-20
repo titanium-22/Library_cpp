@@ -1,5 +1,6 @@
 template<typename T>
 struct SegmentTree {
+  
   int _n, _size, _log;
   vector<T> _data;
   function<T (T, T)> _op;
