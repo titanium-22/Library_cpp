@@ -4,8 +4,21 @@ struct List {
   vector<T> a;
 
   List() {}
-  List(int n) {a.resize(n);}
-  List(int n, T key) {a.resize(n, key);}
+
+  List(int n) {
+    a.resize(n);
+  }
+
+  List(int n, T key) {
+    a.resize(n, key);
+  }
+
+  List(vector<T> v) {
+    a.resize((int)v.size());
+    for (int i = 0; i < (int)v.size(); ++i) {
+      a[i] = v[i];
+    }
+  };
 
   void append(T key) {
     a.emplace_back(key);
