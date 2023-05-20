@@ -7,11 +7,17 @@ struct List {
   List(int n) {a.resize(n);}
   List(int n, T key) {a.resize(n, key);}
 
-  void append(T key) {a.emplace_back(key);}
+  void append(T key) {
+    a.emplace_back(key);
+  }
 
-  void resize(int n, T e) {a.resize(n, e);}
+  void resize(int n, T e) {
+    a.resize(n, e);
+  }
 
-  void reserve(int n) {a.reserve(n);}
+  void reserve(int n) {
+    a.reserve(n);
+  }
 
   T sum(T e) {
     T res = e;
@@ -30,7 +36,7 @@ struct List {
   }
   
   int index(T key) {
-    for (int i = 0; i < len; ++i) {
+    for (int i = 0; i < len(); ++i) {
       if (a[i] == key) return i;
     }
     return -1;
@@ -51,12 +57,11 @@ struct List {
   void clear() {a.clear();}
 
   void insert(int i, T key) {
-
+    a.insert(a.begin()+1, key);
   }
 
   T pop(int i=-1) {
-    if (i < 0) i += len();
-    T key = a[i];
+    T key = a[i<0? i+len(): i];
     remove(key);
     return key;
   }
@@ -79,10 +84,17 @@ struct List {
     return false;
   }
 
-  const T &operator[] (int i) {return a[i<0? i : i+len()];}
-  T operator[] (int i, T key) {a[i<0? i : i+len()] = key;}
+  T& operator[] (int i) {
+    return a[i<0? i+len(): i];
+  }
 
-  int len() {return (int)a.size();}
+  T operator[] (int i) const {
+    return a[i<0? i+len(): i];
+  }
+
+  int len() {
+    return (int)a.size();
+  }
 
   void print() {
     cout << "[";
