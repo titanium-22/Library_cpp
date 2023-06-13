@@ -1,6 +1,6 @@
 template<typename T>
 struct BinaryTrieSet {
-  vector<int> left, right, par, size;
+  vector<unsigned int> left, right, par, size;
   int _end, _root, _bit;
   T _lim, _xor_val;
 
@@ -101,7 +101,7 @@ struct BinaryTrieSet {
     return true;
   }
 
-  int pop(int k) {
+  T pop(int k) {
     if (k < 0) k += len();
     int node = _root;
     T res = 0;
@@ -226,23 +226,23 @@ struct BinaryTrieSet {
     return k;
   }
 
-  int gt(T key) {
+  T gt(T key) {
     int i = index_right(key);
     return (i >= size[_root]? -1 : kth_elm(i));
   }
 
-  int lt(T key) {
+  T lt(T key) {
     int i = index(key) - 1;
     return (i < 0? -1 : kth_elm(i));
   }
 
-  int ge(T key) {
+  T ge(T key) {
     if (key == 0) return (len()? get_min() : -1);
     int i = index_right(key - 1);
     return (i >= size[_root]? -1 : kth_elm(i));
   }
 
-  int le(T key) {
+  T le(T key) {
     int i = index(key + 1) - 1;
     return (i < 0? -1 : kth_elm(i));
   }
