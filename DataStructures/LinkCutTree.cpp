@@ -200,6 +200,12 @@ struct LinkCutTree {
     return data[v<<1];
   }
 
+  int path_length(int u, int v) {
+    evert(u);
+    expose(v);
+    return size[v];
+  }
+
   bool merge(int u, int v) {
     if (same(u, v)) return false;
     evert(u);
