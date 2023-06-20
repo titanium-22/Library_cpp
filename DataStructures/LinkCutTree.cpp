@@ -277,3 +277,17 @@ struct LinkCutTree {
     _update(k);
   }
 };
+
+int op(int s, int t) {
+  return s + t;
+}
+
+int mapping(int f, int s) {
+  return f;
+}
+int composition(int f, int g) {
+  return f;
+}
+
+int e = 0;
+int id = 0;
