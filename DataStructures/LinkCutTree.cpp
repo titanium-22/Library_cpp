@@ -1,34 +1,34 @@
-template<typename T>
+template<typename T, typename F>
 struct LinkCutTree {
 
   int n, group_cnt;
   vector<int> arr, size;
   vector<T> key, data;
+  vector<F> lazy;
   function<T (T, T)> _op;
+  function<T (F, T)> _mapping;
+  function<F (F, F)> _composition;
   T _e;
+  F _id;
 
-  LinkCutTree(int _n, function<T (T, T)> op, T e) {
+  LinkCutTree(int _n, function<T (T, T)> op, function<T (F, T)> mapping, function<F (F, F)> composition, T e, F id) {
     n = _n;
     _op = op;
+    _mapping = mapping;
+    _composition = composition;
     _e = e;
+    _id = id;
     key.resize(n+1, e);
     data.resize(2*n+2, e);
     arr.resize(4*n+4, n);
-    for (int i = 3; i < 4*n+4; i+=4) {
-      arr[i] = 0;
-    }
+    lazy.resize(n+1, id);
+    for (int i = 3; i < 4*n+4; i+=4) arr[i] = 0;
     size.resize(n+1, 1);
     size[n] = 0;
   }
 
   bool _is_root(int node) {
-    if (arr[node<<2|2] == n) {
-      return true;
-    }
-    if ((arr[arr[node<<2|2]<<2] == node) || (arr[arr[node<<2|2]<<2|1] == node)) {
-      return false;
-    }
-    return true;
+    return arr[node<<2|2] == n || !((arr[arr[node<<2|2]<<2] == node) || (arr[arr[node<<2|2]<<2|1] == node));
   }
 
   void _propagate(int node) {
@@ -42,7 +42,22 @@ struct LinkCutTree {
       arr[ln<<2|3] ^= 1;
       arr[rn<<2|3] ^= 1;
     }
-    // 遅延評価はあとで
+    if (lazy[node] == _id) return;
+    F nlazy = lazy[node];
+    int lnode = arr[node<<2], rnode = arr[node<<2|1];
+    if (lnode != n) {
+      data[lnode<<1] = _mapping(nlazy, data[lnode<<1]);
+      data[lnode<<1|1] = _mapping(nlazy, data[lnode<<1|1]);
+      key[lnode] = _mapping(nlazy, key[lnode]);
+      lazy[lnode] = _composition(nlazy, lazy[lnode]);
+    }
+    if (rnode != n) {
+      data[rnode<<1] = _mapping(nlazy, data[rnode<<1]);
+      data[rnode<<1|1] = _mapping(nlazy, data[rnode<<1|1]);
+      key[rnode] = _mapping(nlazy, key[rnode]);
+      lazy[rnode] = _composition(nlazy, lazy[rnode]);
+    }
+    lazy[node] = _id;
   }
 
   void _update(int node) {
@@ -194,10 +209,20 @@ struct LinkCutTree {
     _propagate(v);
   }
 
-  T prod(int u, int v) {
+  T path_prod(int u, int v) {
     evert(u);
     expose(v);
     return data[v<<1];
+  }
+
+  void path_apply(int u, int v, F f) {
+    evert(u);
+    expose(v);
+    key[v] = _mapping(f, key[v]);
+    data[v<<1] = _mapping(f, data[v<<1]);
+    data[v<<1|1] = _mapping(f, data[v<<1|1]);
+    lazy[v] = lazy[v] == _id? f : _composition(f, lazy[v]);
+    _propagate(v);
   }
 
   int path_length(int u, int v) {
