@@ -131,3 +131,10 @@ struct SegmentTree {
     cout << endl;
   }
 };
+
+int op(int s, int t) {
+  return s + t;
+}
+
+int e = 0;
+
