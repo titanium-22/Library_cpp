@@ -91,7 +91,7 @@ struct UnionFind {
       for (int &v: val) {
         printf(" %d", v);
       }
-      printf("\n");
+      cout << endl;
     }
   }
 };
