@@ -27,11 +27,11 @@ struct LinkCutTree {
     size[n] = 0;
   }
 
-  bool _is_root(int node) {
+  bool _is_root(const int node) {
     return arr[node<<2|2] == n || !((arr[arr[node<<2|2]<<2] == node) || (arr[arr[node<<2|2]<<2|1] == node));
   }
 
-  void _propagate(int node) {
+  void _propagate(const int node) {
     if (node == n) return;
     if (arr[node<<2|3]) {
       arr[node<<2|3] = 0;
@@ -60,7 +60,7 @@ struct LinkCutTree {
     lazy[node] = _id;
   }
 
-  void _update(int node) {
+  void _update(const int node) {
     if (node == n) return;
     int ln = arr[node<<2], rn =  arr[node<<2|1];
     _propagate(ln);
@@ -70,7 +70,7 @@ struct LinkCutTree {
     size[node] = 1 + size[ln] + size[rn];
   }
 
-  void _update_triple(int x, int y, int z) {
+  void _update_triple(const int x, const int y, const int z) {
     int lx = arr[x<<2], rx = arr[x<<2|1];
     int ly = arr[y<<2], ry = arr[y<<2|1];
     _propagate(lx);
@@ -88,7 +88,7 @@ struct LinkCutTree {
     size[y] = 1 + size[ly] + size[ry];
   }
 
-  void _update_double(int x, int y) {
+  void _update_double(const int x, const int y) {
     int lx = arr[x<<2], rx = arr[x<<2|1];
     _propagate(lx);
     _propagate(rx);
@@ -100,7 +100,7 @@ struct LinkCutTree {
     size[x] = 1 + size[lx] + size[rx];
   }
 
-  void _splay(int node) {
+  void _splay(const int node) {
     if (node == n) return;
     _propagate(node);
     if (_is_root(node)) return;
@@ -143,7 +143,7 @@ struct LinkCutTree {
     _update_double(pnode, node);
   }
 
-  int expose(int v) {
+  int expose(const int v) {
     int pre = v;
     while (arr[v<<2|2] != n) {
       _splay(v);
@@ -160,13 +160,13 @@ struct LinkCutTree {
     return pre;
   }
 
-  int lca(int root, int u, int v) {
+  int lca(const int root, const int u, const int v) {
     evert(root);
     expose(u);
     return expose(v);
   }
 
-  void link(int c, int p) {
+  void link(const int c, const int p) {
     // assert(!same(c, p))
     expose(c);
     expose(p);
@@ -176,9 +176,9 @@ struct LinkCutTree {
     --group_cnt;
   }
 
-  void cut(int c) {
+  void cut(const int c) {
     expose(c);
-    // assert arr[c<<2] != n;
+    assert(arr[c<<2] != n);
     arr[arr[c<<2]<<2|2] = n;
     arr[c<<2] = n;
     _update(c);
@@ -189,7 +189,7 @@ struct LinkCutTree {
     return group_cnt;
   }
 
-  int root(int v) {
+  int root(const int v) {
     expose(v);
     while (arr[v<<2] != n) {
       v = arr[v<<2];
@@ -199,23 +199,23 @@ struct LinkCutTree {
     return v;
   }
 
-  bool same(int u, int v) {
+  bool same(const int u, const int v) {
     return root(u) == root(v);
   }
 
-  void evert(int v) {
+  void evert(const int v) {
     expose(v);
     arr[v<<2|3] ^= 1;
     _propagate(v);
   }
 
-  T path_prod(int u, int v) {
+  T path_prod(const int u, const int v) {
     evert(u);
     expose(v);
     return data[v<<1];
   }
 
-  void path_apply(int u, int v, F f) {
+  void path_apply(const int u, const int v, F f) {
     evert(u);
     expose(v);
     key[v] = _mapping(f, key[v]);
@@ -225,13 +225,13 @@ struct LinkCutTree {
     _propagate(v);
   }
 
-  int path_length(int u, int v) {
+  int path_length(const int u, const int v) {
     evert(u);
     expose(v);
     return size[v];
   }
 
-  bool merge(int u, int v) {
+  bool merge(const int u, const int v) {
     if (same(u, v)) return false;
     evert(u);
     expose(v);
@@ -241,14 +241,14 @@ struct LinkCutTree {
     return true;
   }
 
-  bool split(int u, int v) {
+  bool split(const int u, const int v) {
     if (!same(v, u)) return false;
     evert(u);
     cut(v);
     return true;
   }
 
-  int path_kth_elm(int s, int t, int k) {
+  int path_kth_elm(const int s, const int t, int k) {
     evert(s);
     expose(t);
     if (size[t] <= k) return -1;
@@ -266,12 +266,12 @@ struct LinkCutTree {
     }
   }
 
-  T get(int k) {
+  T get(const int k) {
     _splay(k);
     return key[k];
   }
 
-  void set(int k, T v) {
+  void set(const int k, const T v) {
     _splay(k);
     key[k] = v;
     _update(k);
