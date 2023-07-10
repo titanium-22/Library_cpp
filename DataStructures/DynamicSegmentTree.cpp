@@ -5,11 +5,11 @@ struct DynamicSegmentTree {
   function<T (T, T)> _op;
   T _e;
 
-  DynamicSegmentTree(int u, function<T (T, T)> op, T e) {
+  DynamicSegmentTree(const int u, function<T (T, T)> op, T e) {
     _build(u, op, e);
   }
 
-  void _build(int u, function<T (T, T)> op, T e) {
+  void _build(const int u, function<T (T, T)> op, T e) {
     this->_op = op;
     this->_e = e;
     this->_u = u;
@@ -17,7 +17,7 @@ struct DynamicSegmentTree {
     this->_size = 1 << _log;
   }
 
-  T _get(int k) {
+  T _get(const int k) {
     auto it = _data.find(k);
     return it == _data.end()? _e : it->second;
   }

@@ -1,4 +1,4 @@
-vector<int> topological_sort(vector<vector<int>> &G) {
+vector<int> topological_sort(const vector<vector<int>> &G) {
   int n = G.size();
   vector<int> d(n);
   for (int i = 0; i < n; ++i) d[i] = 0;

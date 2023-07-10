@@ -1,4 +1,4 @@
-vector<ll> dijkstra(vector<vector<pair<int, int>>> &G, int s) {
+vector<ll> dijkstra(const vector<vector<pair<int, int>>> &G, const int s) {
   int n = (int)G.size();
   vector<ll> dist(n, INF);
   priority_queue<pair<ll, int>> hq;
@@ -10,7 +10,7 @@ vector<ll> dijkstra(vector<vector<pair<int, int>>> &G, int s) {
     tie(d, v) = hq.top();
     hq.pop();
     if (dist[v] > d) continue;
-    for (auto &[x, c]: G[v]) {
+    for (const auto &[x, c]: G[v]) {
       if (dist[x] > d + c) {
         dist[x] = d + c;
         hq.push({dist[x], x});

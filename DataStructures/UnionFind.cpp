@@ -37,11 +37,11 @@ struct UnionFind {
     return true;
   }
 
-  int size(int x) {
+  int size(const int x) {
     return -parents[root(x)];
   }
 
-  bool same(int x, int y) {
+  bool same(const int x, const int y) {
     return root(x) == root(y);
   }
 

@@ -12,7 +12,7 @@ struct CumulativeSum {
     }
   }
 
-  T pref(int r) {
+  T pref(const int r) {
     return _acc[r];
   }
 
@@ -20,11 +20,11 @@ struct CumulativeSum {
     return _acc.back();
   }
 
-  T sum(int l, int r) {
+  T sum(const int l, const int r) {
     return _acc[r] - _acc[l];
   }
 
-  T prod(int l, int r) {
+  T prod(const int l, const int r) {
     return sum(l, r);
   }
 
@@ -40,4 +40,3 @@ struct CumulativeSum {
     cout << _acc.back() << ']' << endl;
   }
 };
-

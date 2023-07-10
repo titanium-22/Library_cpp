@@ -4,13 +4,13 @@ struct FenwickTree {
   int _n, _s;
   vector<T> _tree;
 
-  FenwickTree(int n) {
+  FenwickTree(const int n) {
     _n = n;
     _tree.resize(n+1, 0);
     _s = 1 << (32 - __builtin_clz(_n-1));
   }
 
-  FenwickTree(vector<T> &a) {
+  FenwickTree(const vector<T> &a) {
     _n = a.size();
     _tree.resize(_n+1, 0);
     for (int i = 1; i <= _n; ++i) _tree[i] = a[i-1];
@@ -35,11 +35,11 @@ struct FenwickTree {
     return pref(_n) - pref(l);
   }
 
-  T sum(int l, int r) {
+  T sum(const int l, const int r) {
     return pref(r) - pref(l);
   }
 
-  void add(int k, T x) {
+  void add(int k, const T x) {
     ++k;
     while (k <= _n) {
       _tree[k] += x;
@@ -47,11 +47,11 @@ struct FenwickTree {
     }
   }
 
-  T get(int k) {
+  T get(const int k) {
     return pref(k+1) - pref(k);
   }
 
-  void set(int k, T x) {
+  void set(const int k, const T x) {
     T pre = get(k);
     add(k, x-pre);
   }

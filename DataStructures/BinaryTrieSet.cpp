@@ -71,7 +71,7 @@ struct BinaryTrieSet {
     return true;
   }
 
-  bool contains(T key) {
+  bool contains(const T key) {
     return _find(key) != -1;
   }
 

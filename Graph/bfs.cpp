@@ -1,4 +1,4 @@
-vector<int> bfs(vector<vector<int>> &G, int s) {
+vector<int> bfs(const vector<vector<int>> &G, const int s) {
   vector<int> dist((int)G.size(), -1);
   dist[s] = 0;
   queue<int> qu;
@@ -15,7 +15,7 @@ vector<int> bfs(vector<vector<int>> &G, int s) {
   return dist;
 }
 
-vector<int> bfs(vector<vector<pair<int, int>>> &G, int s) {
+vector<int> bfs(const vector<vector<pair<int, int>>> &G, const int s) {
   vector<int> dist((int)G.size(), -1);
   dist[s] = 0;
   queue<int> qu;
