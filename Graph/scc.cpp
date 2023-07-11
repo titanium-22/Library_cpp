@@ -1,5 +1,5 @@
-vector<vector<int>> get_scc(vector<vector<int>> &G) {
-  int n = (int)G.size();
+vector<vector<int>> get_scc(const vector<vector<int>> &G) {
+  const int n = (int)G.size();
   vector<vector<int>> rG(n);
   for (int v = 0; v < n; ++v) {
     for (const int &x: G[v]) {
