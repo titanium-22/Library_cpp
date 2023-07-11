@@ -10,6 +10,7 @@
     "initializer_list": "cpp",
     "ranges": "cpp",
     "type_traits": "cpp",
-    "utility": "cpp"
+    "utility": "cpp",
+    "algorithm": "cpp"
   }
 }

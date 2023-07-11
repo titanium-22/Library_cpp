@@ -1,6 +1,7 @@
 template<typename T>
 struct Zaatsu {
   vector<T> _to_origin;
+  // unordered_map<T, int> _to_zaatsu;
   map<T, int> _to_zaatsu;
   int n;
 
