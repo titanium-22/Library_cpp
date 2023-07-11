@@ -6,10 +6,12 @@ struct List {
   List() {}
 
   List(int n) {
+    assert(n >= 0);
     a.resize(n);
   }
 
   List(int n, T key) {
+    assert(n >= 0);
     a.resize(n, key);
   }
 
@@ -25,10 +27,12 @@ struct List {
   }
 
   void resize(int n, T e) {
+    assert(n >= 0);
     a.resize(n, e);
   }
 
   void reserve(int n) {
+    assert(n >= 0);
     a.reserve(n);
   }
 
@@ -70,7 +74,8 @@ struct List {
   void clear() {a.clear();}
 
   void insert(int i, T key) {
-    a.insert(a.begin()+1, key);
+    assert(0 <= i && i <= len());
+    a.insert(a.begin()+i, key);
   }
 
   T pop(int i=-1) {
@@ -98,10 +103,12 @@ struct List {
   }
 
   T& operator[] (int i) {
+    assert(-len() <= i && i < len());
     return a[i<0? i+len(): i];
   }
 
   T operator[] (int i) const {
+    assert(-len() <= i && i < len());
     return a[i<0? i+len(): i];
   }
 
@@ -135,4 +142,3 @@ struct List {
     cout << end;
   }
 };
-
